@@ -1,31 +1,49 @@
 import asyncio
 import bot
 import discord
-from os import getenv
+import logging
+import logging.handlers
 from dotenv import load_dotenv
-
+from os import getenv
 
 load_dotenv()
-TOKEN = getenv("DISCORD_BOT_TOKEN")
+if not (TOKEN := getenv("DISCORD_BOT_TOKEN")):
+    print('Token environment variable is empty.')
+    exit(1)
 
 intents = discord.Intents.default()
+intents.message_content = True
 discordbot = bot.Bot(command_prefix='^', intents=intents, help_command=None)
 
+logger = logging.getLogger('discord')
+logger.setLevel(logging.INFO)
+handler = logging.handlers.RotatingFileHandler(
+    filename='discord_bot.log',
+    encoding='utf-8',
+    maxBytes=32 * 1024 * 1024,  # 32 MiB
+    backupCount=5,  # Rotate through 5 files
+)
+dt_fmt = '%Y-%m-%d %H:%M:%S'
+formatter = logging.Formatter('[{asctime}] [{levelname:<8}] {name}: {message}', dt_fmt, style='{')
+handler.setFormatter(formatter)
+logger.addHandler(handler)
+
 async def confirmation():
-    print('Ran main')
+    print('Created Discord Bot Instance.')
 
 async def main() -> None:
-    # do other async actions
+    # call other async methods
     await confirmation()
-
-    # start the client
+    # Start the bot
     async with discordbot:
         await discordbot.start(TOKEN)
 
 asyncio.run(main())
 
-# YOU MUST USE TYPE HINTS FOR ALL PARAMS WITH COG SLASH/APPLICATION COMMANDS OR SELF WILL BE PASSED AS THE INTERACTION
-#https://github.com/Rapptz/discord.py/discussions/8372
 
-#COG EXAMPLE
-# https://gist.github.com/EvieePy/d78c061a4798ae81be9825468fe146be?permalink_comment_id=3488145
+# Examples
+# https://github.com/Rapptz/discord.py/tree/master/docs
+# # https://github.com/Rapptz/discord.py/tree/master/examples
+
+# COG EXAMPLE
+# https://github.com/Rapptz/discord.py/blob/master/docs/ext/commands/cogs.rst
