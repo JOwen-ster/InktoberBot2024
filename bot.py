@@ -46,4 +46,4 @@ class Bot(commands.Bot):
             emb = BotMessageEmbed(description=f'{INDEXED_PROMPTS.__next__()}')
             await channel.send(embed=emb)
             __main__.logger.info('EXECUTED BACKGROUND JOB')
-            await asyncio.sleep(10)  # task runs every X seconds
+            await asyncio.sleep(86400)  # task runs every X seconds
