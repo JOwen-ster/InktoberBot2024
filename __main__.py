@@ -3,6 +3,7 @@ import bot
 import discord
 import logging
 import logging.handlers
+from utils.embeds import BotMessageEmbed
 from dotenv import load_dotenv
 from os import getenv
 
@@ -38,7 +39,7 @@ async def main() -> None:
     async with discordbot:
         await discordbot.start(TOKEN)
 
-asyncio.run(main())
+asyncio.run(main=main())
 
 
 # Examples

@@ -18,13 +18,14 @@ class Bot(commands.Bot):
             except:
                 print(F'Could not load cog.{cog} ({i}/{len(cogs.names)})')
         print('Ran bot setup_hook.')
+        self.loop.create_task(self.my_background_task()) # add background task
 
     async def on_ready(self) -> None:
         tree = await self.tree.sync()
         print(F'Synced {len(tree)} tree commands')
-        self.loop.create_task(self.my_background_task())
 
     async def my_background_task(self):
+        await self.wait_until_ready()
         __main__.logger.info('BACKGROUND TASK STARTED')
         if guild := self.get_guild(1156821909074358423): # guild ID goes here
             __main__.logger.info('GUILD FOUND')
@@ -34,4 +35,4 @@ class Bot(commands.Bot):
         while not self.is_closed():
             await channel.send(embed=emb)
             __main__.logger.info('EXECUTED BACKGROUND JOB')
-            await asyncio.sleep(30)  # task runs every X seconds
+            await asyncio.sleep(30)  # task runs every 30 seconds
