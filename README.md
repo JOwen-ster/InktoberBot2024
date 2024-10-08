@@ -56,6 +56,3 @@ git clone git@github.com:JOwen-ster/Discord.py-Bot-TEMPLATE.git
 ```
 gh repo clone JOwen-ster/Discord.py-Bot-TEMPLATE
 ```
-
-
-

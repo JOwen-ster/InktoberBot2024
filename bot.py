@@ -5,6 +5,16 @@ from discord.ext import commands
 import __main__
 
 
+RAW_PROMPTS = [
+    "Backpack", "Discover", "Boots", "Exotic", "Binoculars", "Trek", 
+    "Passport", "Hike", "Sun", "Nomadic", "Snacks", "Remote", 
+    "Horizon", "Roam", "Guidebook", "Grungy", "Journal", "Drive", 
+    "Ridge", "Uncharted", "Rhinoceros", "Camp", "Rust", "Expedition", 
+    "Scarecrow", "Camera", "Road", "Jumbo", "Navigator", "Violin", "Landmark"
+]
+
+INDEXED_PROMPTS = enumerate(RAW_PROMPTS, start=1)
+
 class Bot(commands.Bot):
     def __init__(self, *args, **kwargs) -> None:
         super().__init__(*args, **kwargs)
@@ -31,8 +41,9 @@ class Bot(commands.Bot):
             __main__.logger.info('GUILD FOUND')
         if channel := guild.get_channel(1219197242011811890): # channel ID goes here
             __main__.logger.info('CHANNEL FOUND')
-        emb = BotMessageEmbed(description='Hello')
+
         while not self.is_closed():
+            emb = BotMessageEmbed(description=f'{INDEXED_PROMPTS.__next__()}')
             await channel.send(embed=emb)
             __main__.logger.info('EXECUTED BACKGROUND JOB')
-            await asyncio.sleep(30)  # task runs every 30 seconds
+            await asyncio.sleep(10)  # task runs every X seconds
